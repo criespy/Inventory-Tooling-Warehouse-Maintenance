@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Update Receiving</title>
+    <style>
+    .h-formfield-uppercase input {
+      text-transform: uppercase;
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        text-transform: none;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        text-transform: none;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        text-transform: none;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        text-transform: none;
+    }
+    ::placeholder { /* Recent browsers */
+        text-transform: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="container px-4 py-5">
+        <div class="container"><p><h2>Receiving Adjustment</h2><p>
+            <hr class="hr" />
+            <a class="btn btn-link" href="{% url 'MainMenu' %}">Main Menu</a>
+            <hr class="hr" />
+            <form name="myForm" onsubmit="return validateForm()" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- alert -->
+                {% if messages %}
+                {% for messages in messages %}
+                {% if messages.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success border-0" role="alert">{{messages}}</div>
+                {% elif messages.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger border-0" role="alert">{{messages}}</div>
+                {% elif messages.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                <div class="alert alert-warning border-0" role="alert">{{messages}}</div>
+                {% endif %}
+                {% endfor %}
+                {% else %}<div id="alert"></div>
+                {% endif %}
+                <!-- alert -->
+                <table class="table table-hover table-bordered table-sm">
+                    <thead>
+                        <tr>
+                          <th>No. TTB</th>
+                          <th>No. Product</th>
+                          <th>Quantity</th>
+                            <th style="width: 15%;">Qty. Adjust.</th>
+                            <th></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>{% for data in object_list %}
+                        <tr><td>{{data.no_ttb}}</td>
+                            <td>{{data.prod_code}}</td>
+                            <td>{{data.ttb_qty}}</td>
+                            <td>
+                                <input type="hidden" name="id" value="{{data.id}}"/>
+                                <input type="hidden" name="qty_bfr" value="{{data.qty_adj}}"/>
+                                <input type="hidden" name="no_ttb" value="{{data.no_ttb}}"/>
+                                <input type="hidden" name="ttb_qty" value="{{data.ttb_qty}}"/>
+                                <input type="hidden" name="prod_code" value="{{data.prod_code}}"/>
+                                <input class="form-control shadow-none" min=1 type="number" id="qty" name="qty" placeholder=0 /></td>
+                            <td><select class="form-select shadow-none" name="adjust">
+                              <option value="AO">AO - ADJUST. OUT</option>
+                              <option value="AI">AI - ADJUST. IN</option>
+                            </select></td>
+                            <td><input class="btn btn-success btn-sm mt-1" type="submit" value="Submit">
+                                &nbsp;<div class="vr"></div>&nbsp;
+                                <a class="btn btn-warning btn-sm mt-1" href="{% url 'ViewReceiving' %}">Cancel</a>
+                            </td>
+                        </tr>{% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+function validateForm() {
+    var a = document.forms["myForm"]["qty_adj"].value;
+    if (a == ""){
+        document.getElementById("alert").innerHTML = "<div class='alert alert-warning border-0' role='alert'>Fill the form to be submitted.</div>";
+        return false;}}
+</script>
+</html>

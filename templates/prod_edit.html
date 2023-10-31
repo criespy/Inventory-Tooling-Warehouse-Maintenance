@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Edit Product</title>
+    <style>
+    .h-formfield-uppercase input {
+      text-transform: uppercase;
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        text-transform: none;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        text-transform: none;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        text-transform: none;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        text-transform: none;
+    }
+    ::placeholder { /* Recent browsers */
+        text-transform: none;
+    }
+    </style>
+</head>
+<body>
+<div class="container px-4 py-5">
+    <div class="container"><p><h2>Edit a Product Master Record</h2><p>
+        <hr class="hr" />
+        <a class="btn btn-link" href="{% url 'MainMenu' %}">Main Menu</a>
+        &nbsp;<div class="vr"></div>&nbsp;
+        <a class="btn btn-link" href="{% url 'AddProduct' %}">New Product</a>
+        &nbsp;<div class="vr"></div>&nbsp;
+        <a class="btn btn-link" href="{% url 'ViewProduct' %}">List Product</a>
+        <hr class="hr" />
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-4 mx-auto gap-3">
+                    <span class="h-formfield-uppercase">
+                        <label for="prod_code">No. Product</label>
+                        <input class="form-control shadow-none mt-2 bg-light" type="text" id="prod_code" name="prod_code" value="{{data.prod_code}}" readonly /><br>
+                        <label for="prod_desc">Product Description</label>
+                        <input class="form-control shadow-none mt-2" type="text" id="prod_desc" name="prod_desc" value="{{data.prod_desc}}" /><br>
+                        <label for="supplier">Supplier</label>
+                        <input class="form-control shadow-none mt-2" type="text" id="supplier" name="supplier" value="{{data.supplier}}" /><br>
+                    </span>
+                </div>
+                <div class="col-4 mx-auto gap-3">
+                    <span class="h-formfield-uppercase">
+                        <label for="stock_min">Min. Stock</label>
+                        <input class="form-control shadow-none mt-2" type="number" id="stock_min" name="stock_min" value="{{data.stock_min}}" /><br>
+                        <label for="stock_max">Max. Stock</label>
+                        <input class="form-control shadow-none mt-2" type="number" id="stock_max" name="stock_max" value="{{data.stock_max}}" /><br>
+                        <label for="l_time_days">Lead Time (Days)</label>
+                        <input class="form-control shadow-none mt-2" type="number" id="l_time_days" name="l_time_days" value="{{data.l_time_days}}" /><br>
+                    </span>
+                </div>
+                <div class="col-4 mx-auto gap-3">
+                    <label>Status</label>
+                    <select class="form-select shadow-none mt-2" name="status" >
+                        {% if object_list %}
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="INACTIVE">INACTIVE</option>
+                        {% else %}
+                        <option value="ACTIVE">ACTIVE</option>
+                        {% endif %}
+                    </select><br>
+                </div>
+            </div>
+            <input class="btn btn-success btn-sm" type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Delete New Line</title>
+</head>
+<body>
+    <div>
+      <div class="row align-items-center" style="height: 100vh;">
+        <div class="mx-auto col-10 col-md-8 col-lg-3">
+          <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+            <p class="description">
+              Are you sure you want to delete this location?</p>
+                <!-- <p class="text-danger"><small>This action cannot be undone.</small></p> -->
+              <table class="table table-borderless table-sm">
+                  <tr><th>No. Location</th></tr>
+                  <tr><td class="text-success">{{data.no_loc_id}}</td></tr>
+              </table>
+              <hr class="hr" />
+              <input type="hidden" name="remark" value="NEW" />
+              <input class="btn btn-danger btn-sm col-4" type="submit" value="Delete">
+              &nbsp;<div class="vr"></div>&nbsp;
+              <a class="btn btn-warning btn-sm col-4" href="{% url 'EditNewline' data.id %}">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

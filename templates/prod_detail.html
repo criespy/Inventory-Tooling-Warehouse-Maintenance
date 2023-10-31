@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Detail Product</title>
+</head>
+<body>
+<div class="container px-4 py-5">
+    <div class="container"><p><h2>Detail a Product Master Record</h2><p>
+        <hr class="hr" />
+        <a class="btn btn-link" href="{% url 'MainMenu' %}">Main Menu</a>
+        &nbsp;<div class="vr"></div>&nbsp;
+        <a class="btn btn-link" href="{% url 'AddProduct' %}">New Product</a>
+        &nbsp;<div class="vr"></div>&nbsp;
+        <a class="btn btn-link" href="{% url 'ViewProduct' %}">List Product</a>
+        <hr class="hr" />
+        <div class="row">
+            <div class="col-4 mx-auto gap-3">
+                <label for="prod_code">No. Product</label>
+                <p id="prod_code" class="text-success">{{data.prod_code}}</p><br>
+                <label for="prod_desc">Product Description</label>
+                <p id="prod_desc" class="text-success">{{data.prod_desc}}</p><br>
+                <label for="supplier">Supplier</label>
+                <p id="supplier" class="text-success">{{data.supplier}}</p><br>
+            </div>
+            <div class="col-4 mx-auto gap-3">
+                <label for="stock_min">Min. Stock</label>
+                <p id="stock_min" class="text-success">{{data.stock_min}}</p><br>
+                <label for="stock_max">Max. Stock</label>
+                <p id="stock_max" class="text-success">{{data.stock_max}}</p><br>
+                <label for="l_time_days">Lead Time (Days)</label>
+                <p id="l_time_days" class="text-success">{{data.l_time_days}}</p><br>
+            </div>
+            <div class="col-4 mx-auto gap-3">
+                <label for="status">Status</label>
+                <p id="status" class="text-success">{{data.status}}</p><br>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Main Menu</title>
+    <style>
+    .h-formfield-uppercase input {
+      text-transform: uppercase;
+      &::placeholder {
+        text-transform: none;
+      }
+    }
+    </style>
+</head>
+<body>
+<!-- <div hx-get="{% url 'MainMenu' %}" hx-trigger="every 10s" hx-swap="innerHTML"> -->
+<div class="container px-4 py-5">
+    <div class="container"><p><h2>Main Menu</h2><p>
+        <hr class="hr" />
+        <div class="row">
+            <div class="col-6 mx-auto gap-3">
+                <a href="location">Location</a>
+                &nbsp;<div class="vr"></div>&nbsp;
+                <a href="product">Product</a>
+                &nbsp;<div class="vr"></div>&nbsp;
+                <a href="newline">New Line</a>
+                &nbsp;<div class="vr"></div>&nbsp;
+                <a href="receiving">Receiving</a>
+                &nbsp;<div class="vr"></div>&nbsp;
+                <a href="picking">Picking</a>
+                &nbsp;<div class="vr"></div>&nbsp;
+                <a href="record/adjust">Adjust. Record</a>
+                &nbsp;<div class="vr"></div>&nbsp;
+                <a href="sto">Stock Opname</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

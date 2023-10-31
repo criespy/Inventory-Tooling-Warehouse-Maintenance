@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Edit New Line</title>
+    <style>
+    .h-formfield-uppercase input {
+      text-transform: uppercase;
+    }
+    ::-webkit-input-placeholder { /* WebKit browsers */
+        text-transform: none;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        text-transform: none;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        text-transform: none;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        text-transform: none;
+    }
+    ::placeholder { /* Recent browsers */
+        text-transform: none;
+    }
+    </style>
+    <style>
+    table {
+        width: 50%;
+        counter-reset: row-num -1;
+    }
+    table tr {
+        counter-increment: row-num;
+    }
+    table tr td:first-child::before {
+        content: counter(row-num) ". ";
+    }
+    </style>
+</head>
+<body>
+    <div class="container px-4 py-5">
+        <div class="container"><p><h2>Edit of Product Location</h2><p>
+            <hr class="hr" />
+            <a class="btn btn-link" href="{% url 'MainMenu' %}">Main Menu</a>
+            &nbsp;<div class="vr"></div>&nbsp;
+            <a class="btn btn-link" href="{% url 'ViewNewline' %}">Search</a>
+            <hr class="hr" />
+            <form name="myForm" onsubmit="return validateForm()" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- alert -->
+                {% if messages %}
+                {% for messages in messages %}
+                {% if messages.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success border-0 alert-dismissible fade show" role="alert">{{messages}}
+                    <a class="btn-close" aria-label="Close" href="{% url 'EditNewline' data.id %}"></a></div>
+                {% elif messages.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger border-0 alert-dismissible fade show" role="alert">{{messages}}
+                    <a class="btn-close" aria-label="Close" href="{% url 'EditNewline' data.id %}"></a></div>
+                {% elif messages.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                <div class="alert alert-warning border-0 alert-dismissible fade show" role="alert">{{messages}}
+                    <a class="btn-close" aria-label="Close" href="{% url 'EditNewline' data.id %}"></a></div>
+                {% endif %}
+                {% endfor %}
+                {% else %}<div id="alert"></div>
+                {% endif %}
+                <!-- alert -->
+                <table class="table table-hover table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th style="width: 15%;">No. Product</th>
+                            <th>Product Description</th>
+                            <th style="width: 15%;">No. Location</th>
+                            <th style="width: 15%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td>{{data.prod_code_id}}</td>
+                            <td>{{data.prod_code.prod_desc}}</td>
+                            {% if data.no_loc_id == None %}
+                            <td class="h-formfield-uppercase">
+                                <input class="form-control shadow-none" type="text" id="no_loc" name="no_loc" placeholder="Enter No. Loc." />
+                            </td>
+                            <td><input class="btn btn-success btn-sm mt-1"  type="submit" value="Submit"></td>
+                                {% else %}
+                            <td>{{data.no_loc_id}}</td>
+                            <td><a class="btn btn-danger btn-sm col-7" href="{% url 'DeleteNewline' data.id %}">Delete</a></td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <hr class="hr" />
+            <p>Available free locations</p>
+            <table class="table table-hover table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">No.</th>
+                            <th>No. Location</th>
+                            <th style="width: 5%;">Assign</th>
+                            <th>Storage</th>
+                            <th>Tooling Area Part</th>
+                            <th style="width: 15%;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>{% for data in object_list %}
+                            <td></td>
+                            <td>{{data.no_loc}}</td>
+                            <td>{{data.assign}}</td>
+                            <td>{% if data.storage == 'CT' %}
+                                CABINET
+                                {% elif data.storage == 'CC' %}
+                                CABINET CHEMICAL
+                                {% elif data.storage == 'FR' %}
+                                FLOOR
+                                {% else %}
+                                RACK
+                                {% endif %}
+                            </td>
+                            <td>{% if data.area == 'BL' %}
+                                BLOW
+                                {% elif data.area == 'IN' %}
+                                INJECTION
+                                {% elif data.area == 'CH' %}
+                                CHEMICAL (MAINTENANCE)
+                                {% elif data.area == 'CE' %}
+                                CONSUMABLE ELECTRICAL
+                                {% elif data.area == 'CM' %}
+                                CONSUMABLE MECHANICAL
+                                {% else %}
+                                VACUUM
+                                {% endif %}
+                            </td>
+                            <td>{% if data.status == 'FL' %}
+                                FREE
+                                {% elif data.status == 'U' %}
+                                USED
+                                {% else %}
+                                HELD
+                                {% endif %}
+                            </td>
+                        </tr>{% endfor %}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</body>
+<script>
+function validateForm() {
+    var a = document.forms["myForm"]["no_loc"].value;
+    if (a == ""){
+        document.getElementById("alert").innerHTML = "<div class='alert alert-warning border-0' role='alert'>Fill the form to be submitted.</div>";
+        return false;}}
+</script>
+</html>

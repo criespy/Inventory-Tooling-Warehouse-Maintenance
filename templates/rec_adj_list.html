@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <title>Adjust Record</title>
+    <style>
+    table {
+        width: 50%;
+        counter-reset: row-num -2;
+    }
+    table tr {
+        counter-increment: row-num;
+    }
+    table tr td:first-child::before {
+        content: counter(row-num) ". ";
+    }
+    </style>
+</head>
+<body>
+<div class="container px-4 py-5">
+    <div class="container"><p><h2>Adjustment Record</h2><p>
+        <hr class="hr" />
+        <a class="btn btn-link" href="{% url 'MainMenu' %}">Main Menu</a>
+        <hr class="hr" />
+        <!-- alert -->
+        {% if messages %}
+        {% for messages in messages %}
+        {% if messages.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div class="alert alert-success border-0 alert-dismissible fade show" role="alert">{{messages}}
+            <a class="btn-close" aria-label="Close" href="{% url 'ViewRecordAdj' %}"></a></div>
+        {% elif messages.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="alert alert-danger border-0 alert-dismissible fade show" role="alert">{{messages}}
+            <a class="btn-close" aria-label="Close" href="{% url 'ViewRecordAdj' %}"></a></div>
+        {% elif messages.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+        <div class="alert alert-warning border-0 alert-dismissible fade show" role="alert">{{messages}}
+            <a class="btn-close" aria-label="Close" href="{% url 'ViewRecordAdj' %}"></a></div>
+        {% endif %}
+        {% endfor %}
+        {% else %}<div id="alert"></div>
+        {% endif %}
+        <!-- alert -->
+        <table class="table table-hover table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th colspan="10">
+                        <form name="myForm" onsubmit="return validateForm()" action="{% url 'ResultRecordAdj' %}" method="GET" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="input-group p-2">
+                                <span class="h-formfield-uppercase">
+                                    <input class="form-control form-control-sm shadow-none" type="text" id="name" name="q" placeholder="Search..." />
+                                </span>
+                                <input class="btn btn-primary btn-sm col-1" type="submit" value="Search" />
+                                <a class="btn btn-outline-secondary btn-sm col-1" href="{% url 'ViewRecordAdj' %}">&#10227; Reset</a>
+                            </div>
+                        </form>
+                    </th>
+                </tr>
+                <tr>
+                    <th style="width: 5%;">No.</th>
+                    <th>No. Location</th>
+                    <th>No. Product</th>
+                    <th>Trans. Type</th>
+                    <th>Adj. Type</th>
+                    <th>Qty. Before</th>
+                    <th>Qty. Adj.</th>
+                    <th>Qty. After</th>
+                    <th>No. TTB</th>
+                    <th>Created Date</th>
+                </tr>
+            </thead>{% if object_list %}
+            <tbody>{% for data in object_list %}
+                <tr>
+                    <td></td>
+                    <td>{{data.no_loc}}</td>
+                    <td>{{data.prod_code}}</td>
+                    <td>{{data.transc_type}}</td>
+                    <td>{{data.adj_type}}</td>
+                    <td>{{data.qty_bfr}}</td>
+                    <td>{{data.qty_adj}}</td>
+                    <td>{{data.qty_afr}}</td>
+                    <td>{% if data.no_ttb == None %}
+                        {{data.no_ttb|default:"--"}}
+                        {% else %}
+                        {{data.no_ttb}}
+                        {% endif %}</td>
+                    <td>{{data.date_created|date:"d/m/Y"}} {{data.date_created|date:"H:i"}}</td>
+                </tr>{% endfor %}{% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script>
+function validateForm() {
+    var a = document.forms["myForm"]["name"].value;
+    if (a == ""){
+        document.getElementById("alert").innerHTML = "<div class='alert alert-warning border-0' role='alert'>Fill the form to be submitted.</div>";
+        return false;}}
+</script>
+</html>
